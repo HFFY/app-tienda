@@ -46,3 +46,9 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Firma de release (no versionar)
+/android/key.properties
+/android/upload-keystore.jks
+CLAUDE.md
+PLAN.md

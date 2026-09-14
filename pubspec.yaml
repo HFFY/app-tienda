@@ -1,5 +1,5 @@
 name: app_tienda
-description: "A new Flutter project."
+description: "App móvil de gestión de tienda (Android). Clientes, inventario, servicios, ventas y reportes, 100 % offline con SQLite."
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -7,13 +7,56 @@ environment:
   sdk: ^3.13.3
 
 dependencies:
+  cryptography: ^2.9.0
+  fl_chart: ^1.2.0
   flutter:
     sdk: flutter
+  flutter_animate: ^4.5.2
+  flutter_riverpod: ^3.4.3
+  freezed_annotation: ^3.1.0
+  go_router: ^18.0.1
+  image_picker: ^1.2.3
+  intl: ^0.20.3
+  path: ^1.9.1
+  path_provider: ^2.1.6
+  share_plus: ^13.3.0
+  shared_preferences: ^2.5.5
+  sqflite: ^2.4.4
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  build_runner: ^2.16.1
+  freezed: ^4.0.1
+  sqflite_common_ffi: ^2.4.3
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
 
 flutter:
   uses-material-design: true
+
+# Icono de la app (solo Android): dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#D32F2F"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  min_sdk_android: 24
+
+# Splash nativo (solo Android): dart run flutter_native_splash:create
+flutter_native_splash:
+  color: "#FFFFFF"
+  color_dark: "#121212"
+  image: "assets/icon/splash.png"
+  android: true
+  ios: false
+  web: false
+  android_12:
+    color: "#FFFFFF"
+    color_dark: "#121212"
+    image: "assets/icon/splash.png"
+    icon_background_color: "#FFFFFF"
+    icon_background_color_dark: "#121212"
