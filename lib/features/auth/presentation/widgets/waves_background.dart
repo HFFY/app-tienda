@@ -2,73 +2,26 @@ import 'package:flutter/material.dart';
 
 import 'waves_painter.dart';
 
-/// Fondo de olas animadas a pantalla completa.
+/// Fase fija con la que se pintan las olas (elegida para que las tres capas
+/// queden bien repartidas en pantalla).
+const double kWavesStaticPhase = 0.35;
+
+/// Fondo de olas a pantalla completa, **estático**: se pinta un único
+/// fotograma y no hay ningún controlador de animación.
 ///
-/// - Ciclo de 12 s: movimiento lento, no mareante.
-/// - Se pausa cuando la app pasa a segundo plano (batería).
-/// - Con "Quitar animaciones" en accesibilidad pinta un único fotograma.
-/// - `RepaintBoundary` aísla el repintado del formulario que va encima.
-class WavesBackground extends StatefulWidget {
+/// `RepaintBoundary` aísla el canvas del formulario que va encima, así el
+/// fondo no se vuelve a pintar cuando el usuario escribe.
+class WavesBackground extends StatelessWidget {
   const WavesBackground({super.key});
-
-  @override
-  State<WavesBackground> createState() => _WavesBackgroundState();
-}
-
-class _WavesBackgroundState extends State<WavesBackground>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  late final AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 12));
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _syncAnimation();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _syncAnimation();
-    } else {
-      _controller.stop();
-    }
-  }
-
-  void _syncAnimation() {
-    if (MediaQuery.disableAnimationsOf(context)) {
-      _controller
-        ..stop()
-        ..value = 0.35;
-    } else if (!_controller.isAnimating) {
-      _controller.repeat();
-    }
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return ExcludeSemantics(
       child: RepaintBoundary(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, _) => CustomPaint(
-            painter: WavesPainter(phase: _controller.value, scheme: scheme),
-            size: Size.infinite,
-          ),
+        child: CustomPaint(
+          painter: WavesPainter(phase: kWavesStaticPhase, scheme: scheme),
+          size: Size.infinite,
         ),
       ),
     );
